@@ -1403,6 +1403,198 @@
             },
 
             renderPieces() {
+    const container = document.getElementById('pieces-container');
+    if (!container || !this.game) return;
+
+    container.innerHTML = '';
+
+    const board = this.game.board();
+
+    for (let r = 0; r < 8; r++) {
+        for (let f = 0; f < 8; f++) {
+
+            const piece = board[r][f];
+            if (!piece) continue;
+
+            const square = String.fromCharCode(97 + f) + (8 - r);
+            const p = this.squarePosition(square);
+
+            const pieceEntity = document.createElement('a-entity');
+
+            pieceEntity.classList.add('clickable');
+            pieceEntity.dataset.square = square;
+
+            pieceEntity.setAttribute(
+                'position',
+                `${p.x} 0.14 ${p.z}`
+            );
+
+            const color = piece.color === 'w'
+                ? '#f8fafc'
+                : '#a855f7';
+
+            const add = (type, attributes) => {
+                const el = document.createElement(type);
+
+                Object.entries(attributes).forEach(([key, value]) => {
+                    el.setAttribute(key, value);
+                });
+
+                el.setAttribute(
+                    'material',
+                    `color: ${color}; roughness: 0.25; metalness: 0.65`
+                );
+
+                pieceEntity.appendChild(el);
+                return el;
+            };
+
+            /* BASE */
+            add('a-cylinder', {
+                radius: '0.095',
+                height: '0.025',
+                position: '0 0 0'
+            });
+
+            add('a-cylinder', {
+                radius: '0.07',
+                height: '0.025',
+                position: '0 0.025 0'
+            });
+
+            /* PAWN */
+            if (piece.type === 'p') {
+                add('a-cylinder', {
+                    radius: '0.045',
+                    height: '0.09',
+                    position: '0 0.07 0'
+                });
+
+                add('a-sphere', {
+                    radius: '0.052',
+                    position: '0 0.145 0'
+                });
+            }
+
+            /* ROOK */
+            else if (piece.type === 'r') {
+                add('a-cylinder', {
+                    radius: '0.05',
+                    height: '0.14',
+                    position: '0 0.09 0'
+                });
+
+                add('a-cylinder', {
+                    radius: '0.07',
+                    height: '0.025',
+                    position: '0 0.17 0'
+                });
+
+                add('a-box', {
+                    width: '0.08',
+                    height: '0.045',
+                    depth: '0.08',
+                    position: '0 0.205 0'
+                });
+            }
+
+            /* KNIGHT */
+            else if (piece.type === 'n') {
+                add('a-cylinder', {
+                    radius: '0.05',
+                    height: '0.12',
+                    position: '0 0.08 0'
+                });
+
+                add('a-cone', {
+                    radius-bottom: '0.065',
+                    radius-top: '0.015',
+                    height: '0.15',
+                    position: '0 0.205 0'
+                });
+            }
+
+            /* BISHOP */
+            else if (piece.type === 'b') {
+                add('a-cylinder', {
+                    radius: '0.05',
+                    height: '0.12',
+                    position: '0 0.08 0'
+                });
+
+                add('a-cone', {
+                    radius-bottom: '0.065',
+                    radius-top: '0.012',
+                    height: '0.16',
+                    position: '0 0.21 0'
+                });
+
+                add('a-sphere', {
+                    radius: '0.018',
+                    position: '0 0.30 0'
+                });
+            }
+
+            /* QUEEN */
+            else if (piece.type === 'q') {
+                add('a-cylinder', {
+                    radius: '0.055',
+                    height: '0.15',
+                    position: '0 0.095 0'
+                });
+
+                add('a-cone', {
+                    radius-bottom: '0.075',
+                    radius-top: '0.018',
+                    height: '0.14',
+                    position: '0 0.23 0'
+                });
+
+                add('a-sphere', {
+                    radius: '0.025',
+                    position: '0 0.325 0'
+                });
+            }
+
+            /* KING */
+            else if (piece.type === 'k') {
+                add('a-cylinder', {
+                    radius: '0.06',
+                    height: '0.16',
+                    position: '0 0.10 0'
+                });
+
+                add('a-cone', {
+                    radius-bottom: '0.075',
+                    radius-top: '0.018',
+                    height: '0.14',
+                    position: '0 0.25 0'
+                });
+
+                add('a-box', {
+                    width: '0.025',
+                    height: '0.09',
+                    depth: '0.025',
+                    position: '0 0.36 0'
+                });
+
+                add('a-box', {
+                    width: '0.075',
+                    height: '0.025',
+                    depth: '0.025',
+                    position: '0 0.36 0'
+                });
+            }
+
+            pieceEntity.addEventListener('click', e => {
+                e.stopPropagation();
+                this.handleSquareClick(square);
+            });
+
+            container.appendChild(pieceEntity);
+        }
+    }
+},
                 const container = document.getElementById('pieces-container');
                 if (!container) return;
                 container.innerHTML = '';
