@@ -1595,35 +1595,16 @@
         }
     }
 },
-                const container = document.getElementById('pieces-container');
-                if (!container) return;
-                container.innerHTML = '';
-                const board = this.game.board();
-                for (let r = 0; r < 8; r++) {
-                    for (let f = 0; f < 8; f++) {
-                        const piece = board[r][f];
-                        if (!piece) continue;
-                        const square = String.fromCharCode(97 + f) + (8 - r);
-                        const p = this.squarePosition(square);
-                        const text = document.createElement('a-text');
-                        text.classList.add('clickable');
-                        text.dataset.square = square;
-                        text.setAttribute('value', PIECES[piece.color + piece.type]);
-                        text.setAttribute('align', 'center');
-                        text.setAttribute('anchor', 'center');
-                        text.setAttribute('baseline', 'center');
-                        text.setAttribute('width', '0.34');
-                        text.setAttribute('height', '0.34');
-                        text.setAttribute('position', p.x + ' 0.14 ' + p.z);
-                        text.setAttribute('rotation', '-90 0 0');
-                        text.setAttribute('color', piece.color === 'w' ? '#f8fafc' : '#a855f7');
-                        text.setAttribute('side', 'double');
-                        text.addEventListener('click', e => {
-                            e.stopPropagation();
-                            this.handleSquareClick(square);
-                        });
-                        container.appendChild(text);
-                    }
+renderPieces() {
+    const container = document.getElementById('pieces-container');
+    if (!container || !this.game) return;
+
+    container.innerHTML = '';
+
+    const board = this.game.board();
+
+    // ... your new 3D piece code ...
+                        }
                 }
             },
 
